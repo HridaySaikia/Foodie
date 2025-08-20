@@ -9,6 +9,10 @@ const Signup = () => {
     password: '',
     geolocation: ''
   });
+  const [loading, setLoading] = useState(false);
+
+  // ✅ Use environment variable for backend URL
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -16,25 +20,30 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
       const { name, email, password, geolocation } = credentials;
 
-      const res = await fetch("http://localhost:5000/api/createUser", {
+      const res = await fetch(`${API_BASE_URL}/api/createUser`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password, location: geolocation })
       });
 
       const data = await res.json();
-      if (data.success) {
-        alert("Account created successfully!");
+
+      if (res.ok && data.success) {
+        alert("✅ Account created successfully!");
         navigate("/login");
       } else {
-        alert("Signup failed: " + (data.error || "Unknown error"));
+        alert("❌ Signup failed: " + (data.error || "Unknown error"));
       }
     } catch (error) {
       console.error("Signup error:", error);
-      alert("Something went wrong. Please try again.");
+      alert("⚠️ Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,9 +112,10 @@ const Signup = () => {
 
         <button
           type="submit"
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-md transition-colors"
+          disabled={loading}
+          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-md transition-colors disabled:opacity-50"
         >
-          Sign Up
+          {loading ? "Creating Account..." : "Sign Up"}
         </button>
 
         <p className="mt-6 text-center text-gray-400">
@@ -120,3 +130,4 @@ const Signup = () => {
 };
 
 export default Signup;
+
