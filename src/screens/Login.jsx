@@ -22,7 +22,7 @@ const Login = () => {
         try {
             console.log("🔐 Attempting login with:", credentials.email);
 
-            const res = await fetch(`${API_BASE}/api/loginUser`, {
+            const res = await fetch(`${API_BASE}/loginUser`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(credentials)
