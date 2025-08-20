@@ -4,7 +4,7 @@ import { useCart, useDispatchCart } from '../components/ContextReducer';
 import { loadRazorpay } from "../utils/loadRazorpay";
 
 // ✅ Use environment variable (set NEXT_PUBLIC_API_URL in Vercel dashboard)
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+const API_BASE_URL = process.env.VITE_API_BASE_URL || "";
 
 export default function Cart({ onClose }) {
   const data = useCart() || [];
