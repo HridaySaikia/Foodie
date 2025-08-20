@@ -13,7 +13,7 @@ const Home = () => {
   // Fetch food data from backend
   const loadData = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/foodData`)
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/foodData`)
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
       const json = await response.json()
       setFoodItem(json[0] || [])
