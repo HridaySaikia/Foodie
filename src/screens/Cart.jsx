@@ -43,7 +43,7 @@ export default function Cart({ onClose }) {
 
     try {
       // ✅ Step 1: Create order on backend (use Vercel deployed API)
-      const orderRes = await fetch(`${API_BASE_URL}/api/payment/checkout`, {
+      const orderRes = await fetch(`${API_BASE_URL}/payment/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: totalPrice })
@@ -79,7 +79,7 @@ export default function Cart({ onClose }) {
             signature: response.razorpay_signature
           };
 
-          const saveRes = await fetch(`${API_BASE_URL}/api/orderData`, {
+          const saveRes = await fetch(`${API_BASE_URL}/orderData`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
