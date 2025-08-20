@@ -18,21 +18,25 @@ function AdminDashboard() {
     });
 
     const [searchQuery, setSearchQuery] = useState(""); // Search state
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
     const token = localStorage.getItem("adminToken");
 
     // Fetch Foods
+
+
     const fetchFoods = async () => {
-        const res = await fetch("http://localhost:5000/api/admin/food", {
+        const res = await fetch(`${API_BASE}/admin/food`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
         setFoods(data);
     };
 
+
     // Fetch Orders
     const fetchOrders = async () => {
-        const res = await fetch("http://localhost:5000/api/admin/orders", {
+        const res = await fetch(`${API_BASE}/admin/food`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -41,7 +45,7 @@ function AdminDashboard() {
 
     // Fetch Users
     const fetchUsers = async () => {
-        const res = await fetch("http://localhost:5000/api/admin/users", {
+        const res = await fetch(`${API_BASE}/admin/food`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
