@@ -25,7 +25,7 @@ const Signup = () => {
     try {
       const { name, email, password, geolocation } = credentials;
 
-      const res = await fetch(`${API_BASE_URL}/api/createUser`, {
+      const res = await fetch(`${API_BASE_URL}/createUser`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password, location: geolocation })
