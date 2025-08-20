@@ -1,7 +1,10 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
 import { useCart, useDispatchCart } from '../components/ContextReducer';
-import { loadRazorpay } from "../utils/loadRazorpay"; // <-- add this import at top
+import { loadRazorpay } from "../utils/loadRazorpay";
+
+// ✅ Use environment variable (set NEXT_PUBLIC_API_URL in Vercel dashboard)
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 export default function Cart({ onClose }) {
   const data = useCart() || [];
@@ -15,9 +18,7 @@ export default function Cart({ onClose }) {
     );
   }
 
-  // FIXED: price already includes qty
   const totalPrice = data.reduce((total, food) => total + food.price, 0);
-
 
   const handleCheckOut = async () => {
     const userEmail = localStorage.getItem("userEmail");
@@ -26,7 +27,6 @@ export default function Cart({ onClose }) {
       return;
     }
 
-    // ✅ Prepare cart items
     const validatedData = data.map((item) => ({
       name: String(item.name),
       qty: Number(item.qty),
@@ -35,7 +35,6 @@ export default function Cart({ onClose }) {
       img: String(item.img || "")
     }));
 
-    // ✅ Step 1: Load Razorpay script
     const res = await loadRazorpay("https://checkout.razorpay.com/v1/checkout.js");
     if (!res) {
       alert("Razorpay SDK failed to load. Check internet connection.");
@@ -43,30 +42,28 @@ export default function Cart({ onClose }) {
     }
 
     try {
-      // ✅ Step 2: Create order from backend
-      const orderRes = await fetch("http://localhost:5000/api/payment/checkout", {
+      // ✅ Step 1: Create order on backend (use Vercel deployed API)
+      const orderRes = await fetch(`${API_BASE_URL}/api/payment/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: totalPrice })
       });
 
       const { order } = await orderRes.json();
-
       if (!order) {
         alert("Failed to create Razorpay order");
         return;
       }
 
-      // ✅ Step 3: Open Razorpay Checkout
+      // ✅ Step 2: Razorpay checkout options
       const options = {
-        key: "rzp_test_R7EZJFloSc6RNZ", // 🔑 Replace with your Razorpay Key ID
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // set in Vercel env
         amount: order.amount,
         currency: order.currency,
         name: "Foodie App",
         description: "Food Order Payment",
         order_id: order.id,
         handler: async function (response) {
-          // ✅ Step 4: Save order in DB after payment success
           const payload = {
             email: userEmail,
             order_data: [
@@ -82,7 +79,7 @@ export default function Cart({ onClose }) {
             signature: response.razorpay_signature
           };
 
-          const saveRes = await fetch("http://localhost:5000/api/orderData", {
+          const saveRes = await fetch(`${API_BASE_URL}/api/orderData`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
@@ -113,7 +110,6 @@ export default function Cart({ onClose }) {
       alert("Something went wrong while processing payment: " + error.message);
     }
   };
-
 
   return (
     <div className="h-full flex flex-col">
