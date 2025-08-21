@@ -12,11 +12,15 @@ mongoDB();
 
 // Middleware
 app.use(cors({
-  origin: "http://localhost:5173", // allow your Vite/React frontend
+  origin: [
+    "http://localhost:5173", 
+    "https://foodie-qkxe110jc-hridayananda-saikias-projects.vercel.app"
+  ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 app.use(express.json());
 
 // API Routes
