@@ -1,11 +1,8 @@
 const express = require('express');
 const cors = require("cors");
 const mongoDB = require("./db");
+
 const app = express();
-const port = 5000; // backend port
-
-
-
 
 // Connect to MongoDB
 mongoDB();
@@ -13,7 +10,7 @@ mongoDB();
 // Middleware
 app.use(cors({
   origin: [
-    "http://localhost:5173", 
+    "http://localhost:5173",
     "https://foodie-qkxe110jc-hridayananda-saikias-projects.vercel.app"
   ],
   credentials: true,
@@ -31,15 +28,12 @@ app.use("/api/admin", require("./Routes/Admin"));
 app.use("/api", require("./Routes/Food"));
 app.use("/api/payment", require("./Routes/Payment"));
 
-
-
-
 // Health check route
 app.get('/', (req, res) => {
   res.send('Backend is running 🚀');
 });
 
-// Start server
-app.listen(port, '0.0.0.0', () => {
-  console.log(`✅ Server running on http://localhost:${port}`);
-});
+// ❌ REMOVE app.listen()
+// ✅ Export the app for Vercel
+module.exports = app;
+
