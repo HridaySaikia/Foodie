@@ -18,7 +18,7 @@ function AdminDashboard() {
   });
   const [searchQuery, setSearchQuery] = useState(""); 
 
-  const API_BASE = import.meta.env.VITE_API_BASE_URL;
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://foodie-backend-tau.vercel.app";
   const token = localStorage.getItem("adminToken");
 
   // Fetch Foods
