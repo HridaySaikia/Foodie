@@ -2,12 +2,9 @@
   "version": 2,
   "routes": [
     {
-      "src": "/api/.*",
-      "dest": "/api/index.js"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/index.html",
+      "methods": ["GET", "HEAD"]
     }
   ],
   "rewrites": [
