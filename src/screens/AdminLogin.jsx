@@ -9,7 +9,7 @@ function AdminLogin() {
   const navigate = useNavigate();
 
   // Use environment variable for backend API
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
