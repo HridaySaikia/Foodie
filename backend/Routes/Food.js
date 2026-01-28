@@ -8,13 +8,14 @@ const adminAuth = require("../middleware/AdminAuth"); // ✅ Middleware for admi
 //---------------------------------------------
 router.post("/food", adminAuth, async (req, res) => {
   try {
-    const { name, price, category, img, description } = req.body;
+    const { name, options, category, img, description } = req.body;
 
-    if (!name || !price) {
-      return res.status(400).json({ success: false, message: "Name & price are required" });
+    // Validate inputs
+    if (!name || !options || Object.keys(options).length === 0) {
+      return res.status(400).json({ success: false, message: "Name & options are required" });
     }
 
-    const newFood = new Food({ name, price, category, img, description });
+    const newFood = new Food({ name, options, category, img, description });
     await newFood.save();
 
     res.json({ success: true, message: "Food item added successfully", food: newFood });
@@ -41,7 +42,13 @@ router.get("/food", async (req, res) => {
 router.put("/food/:id", adminAuth, async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedFood = await Food.findByIdAndUpdate(id, req.body, { new: true });
+    const { name, options, category, img, description } = req.body;
+
+    const updatedFood = await Food.findByIdAndUpdate(
+      id,
+      { name, options, category, img, description },
+      { new: true }
+    );
 
     if (!updatedFood) {
       return res.status(404).json({ success: false, message: "Food item not found" });
@@ -72,13 +79,3 @@ router.delete("/food/:id", adminAuth, async (req, res) => {
 });
 
 module.exports = router;
-
-// 🟢 Old compatibility route
-// router.get("/foodData", async (req, res) => {
-//   try {
-//     const foods = await Food.find();
-//     res.json(foods);
-//   } catch (err) {
-//     res.status(500).json({ success: false, error: err.message });
-//   }
-// });

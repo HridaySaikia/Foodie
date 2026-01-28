@@ -23,7 +23,7 @@ function AdminDashboard() {
 
     // Fetch Foods
     const fetchFoods = async () => {
-        const res = await fetch("http://localhost:5000/api/admin/food", {
+        const res = await fetch(`${process.env.BASE_URL}/api/admin/food`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -32,7 +32,7 @@ function AdminDashboard() {
 
     // Fetch Orders
     const fetchOrders = async () => {
-        const res = await fetch("http://localhost:5000/api/admin/orders", {
+        const res = await fetch(`${process.env.BASE_URL}/api/admin/orders`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -41,7 +41,7 @@ function AdminDashboard() {
 
     // Fetch Users
     const fetchUsers = async () => {
-        const res = await fetch("http://localhost:5000/api/admin/users", {
+        const res = await fetch(`${process.env.BASE_URL}/api/admin/users`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -86,13 +86,13 @@ function AdminDashboard() {
         const { _id, name, category, img, description, options } = foodForm;
 
         if (_id) {
-            await fetch(`http://localhost:5000/api/admin/food/${_id}`, {
+            await fetch(`${process.env.BASE_URL}/api/admin/food/${_id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ name, category, img, description, options }),
             });
         } else {
-            await fetch("http://localhost:5000/api/admin/food", {
+            await fetch(`${process.env.BASE_URL}/api/admin/food`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ name, category, img, description, options }),
@@ -106,7 +106,7 @@ function AdminDashboard() {
     // Delete food
     const handleDelete = async (_id) => {
         if (window.confirm("Are you sure you want to delete this food item?")) {
-            await fetch(`http://localhost:5000/api/admin/food/${_id}`, {
+            await fetch(`${process.env.BASE_URL}/api/admin/food/${_id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });

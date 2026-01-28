@@ -44,7 +44,7 @@ export default function Cart({ onClose }) {
 
     try {
       // ✅ Step 2: Create order from backend
-      const orderRes = await fetch("http://localhost:5000/api/payment/checkout", {
+      const orderRes = await fetch(`${import.meta.env.VITE_BASE_URL}/api/payment/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: totalPrice })
@@ -82,7 +82,7 @@ export default function Cart({ onClose }) {
             signature: response.razorpay_signature
           };
 
-          const saveRes = await fetch("http://localhost:5000/api/orderData", {
+          const saveRes = await fetch(`${import.meta.env.VITE_BASE_URL}/api/orderData`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)

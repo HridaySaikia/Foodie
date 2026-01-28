@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const adminAuth = require("../middleware/AdminAuth"); // ✅ import middleware
 
 // ⚡ Admin credentials
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@example.com";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@foodie.com";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 

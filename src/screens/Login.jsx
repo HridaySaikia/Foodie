@@ -21,7 +21,7 @@ const Login = () => {
         try {
             console.log("🔐 Attempting login with:", credentials.email);
             
-            const res = await fetch("http://localhost:5000/api/loginUser", {
+            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/loginUser`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 // FIXED: Use credentials object instead of undefined variables
