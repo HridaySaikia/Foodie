@@ -20,6 +20,10 @@ function App() {
     <CartProvider>
       <Router>
         <div>
+          <div style={{ position: "fixed", bottom: 10, right: 10, background: "black", color: "white", padding: "6px 10px", borderRadius: 8, zIndex: 9999 }}>
+            VITE_BASE_URL: {import.meta.env.VITE_BASE_URL || "MISSING"}
+          </div>
+
           <Routes>
             <Route exact path='/' element={<Home />} />
             <Route exact path='/login' element={<Login />} />
