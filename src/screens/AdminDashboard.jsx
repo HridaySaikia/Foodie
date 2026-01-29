@@ -22,17 +22,40 @@ function AdminDashboard() {
     const token = localStorage.getItem("adminToken");
 
     // Fetch Foods
+    // const fetchFoods = async () => {
+    //     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/admin/food`, {
+    //         headers: { Authorization: `Bearer ${token}` },
+    //     });
+    //     const data = await res.json();
+    //     setFoods(data);
+    // };
+
     const fetchFoods = async () => {
-        const res = await fetch(`${process.env.BASE_URL}/api/admin/food`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        setFoods(data);
+    const BASE = import.meta.env.VITE_BASE_URL;
+
+    console.log("BASE =", BASE);
+
+    const url = `${BASE}/api/admin/food`;
+    console.log("Fetching:", url);
+
+    const res = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const text = await res.text(); // 👈 read as text first
+    console.log("STATUS:", res.status);
+    console.log("RESPONSE:", text.slice(0, 200)); // first 200 chars
+
+    // Only parse JSON if it looks like JSON
+    const data = text.startsWith("<") ? null : JSON.parse(text);
+    if (data) setFoods(data);
     };
+
+
 
     // Fetch Orders
     const fetchOrders = async () => {
-        const res = await fetch(`${process.env.BASE_URL}/api/admin/orders`, {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/admin/orders`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -41,7 +64,7 @@ function AdminDashboard() {
 
     // Fetch Users
     const fetchUsers = async () => {
-        const res = await fetch(`${process.env.BASE_URL}/api/admin/users`, {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/admin/users`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -86,13 +109,13 @@ function AdminDashboard() {
         const { _id, name, category, img, description, options } = foodForm;
 
         if (_id) {
-            await fetch(`${process.env.BASE_URL}/api/admin/food/${_id}`, {
+            await fetch(`${import.meta.env.VITE_BASE_URL}/api/admin/food/${_id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ name, category, img, description, options }),
             });
         } else {
-            await fetch(`${process.env.BASE_URL}/api/admin/food`, {
+            await fetch(`${import.meta.env.VITE_BASE_URL}/api/admin/food`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ name, category, img, description, options }),
@@ -106,7 +129,7 @@ function AdminDashboard() {
     // Delete food
     const handleDelete = async (_id) => {
         if (window.confirm("Are you sure you want to delete this food item?")) {
-            await fetch(`${process.env.BASE_URL}/api/admin/food/${_id}`, {
+            await fetch(`${import.meta.env.VITE_BASE_URL}/api/admin/food/${_id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });
