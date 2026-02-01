@@ -20,9 +20,6 @@ function App() {
     <CartProvider>
       <Router>
         <div>
-          <div style={{ position: "fixed", bottom: 10, right: 10, background: "black", color: "white", padding: "6px 10px", borderRadius: 8, zIndex: 9999 }}>
-          </div>
-
           <Routes>
             <Route exact path='/' element={<Home />} />
             <Route exact path='/login' element={<Login />} />
